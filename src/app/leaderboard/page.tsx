@@ -4,6 +4,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 import { Trophy, ShieldCheck, Zap, Users, Star, ArrowUpRight } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -31,7 +32,7 @@ export default function LeaderboardPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16">
           <div className="space-y-4">
-            <h1 className="text-5xl font-headline font-bold text-white tracking-tighter">TRUST ELITE</h1>
+            <h1 className="text-5xl font-headline font-bold text-white tracking-tighter uppercase">TRUST ELITE</h1>
             <p className="text-muted-foreground text-xl font-light">
               Top community verifiers who maintain the integrity of the A-B-H-A-Y protocol.
             </p>
@@ -65,7 +66,7 @@ export default function LeaderboardPage() {
                       <AvatarImage src={`https://picsum.photos/seed/${user.address}/200`} />
                       <AvatarFallback>0x</AvatarFallback>
                     </Avatar>
-                    <div className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full bg-accent flex items-center justify-center font-bold text-sm">
+                    <div className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full bg-accent flex items-center justify-center font-bold text-sm text-white">
                       {user.rank}
                     </div>
                   </div>
