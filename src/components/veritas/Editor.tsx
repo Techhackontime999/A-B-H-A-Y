@@ -12,12 +12,15 @@ import { Lock, FileText, Send, Eye, ShieldCheck, Database, Link as LinkIcon, Cpu
 import { useToast } from "@/hooks/use-toast";
 import { preventDuplicateReports } from "@/ai/flows/prevent-duplicate-reports";
 import { Progress } from "@/components/ui/progress";
-import { useWallet } from "@/components/veritas/WalletProvider";
+import { useWallet, Report } from "@/components/veritas/WalletProvider";
+import { useRouter } from "next/navigation";
 
 export function ReportEditor() {
-  const { wallet, connect } = useWallet();
+  const { wallet, connect, addReport, reports } = useWallet();
+  const router = useRouter();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [category, setCategory] = useState("General");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [step, setStep] = useState<"idle" | "moderating" | "encrypting" | "signing" | "uploading" | "anchoring">("idle");
   const [progress, setProgress] = useState(0);
@@ -56,67 +59,80 @@ export function ReportEditor() {
       // Step 1: AI Content Moderation
       setStep("moderating");
       setProgress(15);
-      const previousReports = [
-        "Major data breach at Silicon Valley tech giant leaked millions of records.",
-        "Evidence of corruption in local government regarding zoning laws.",
-        "Environmental violations discovered at the offshore drilling site."
-      ];
+      
+      const previousReportTexts = reports.map(r => r.content);
 
       const moderationResult = await preventDuplicateReports({
         reportText: content,
-        previousReports
+        previousReports: previousReportTexts
       });
 
-      if (moderationResult.isDuplicate) {
+      if (moderationResult.isDuplicate && moderationResult.similarityScore > 0.8) {
         toast({
           variant: "destructive",
           title: "Duplicate Flagged",
-          description: `Similarity score: ${(moderationResult.similarityScore * 100).toFixed(0)}%. Submission aborted.`,
+          description: `Similarity score: ${(moderationResult.similarityScore * 100).toFixed(0)}%. Submission rejected.`,
         });
         setIsSubmitting(false);
         setStep("idle");
         return;
       }
 
-      // Step 2: Client-side Encryption (User Browser)
+      // Step 2: Client-side Encryption
       setStep("encrypting");
       setProgress(30);
-      await new Promise(resolve => setTimeout(resolve, 1200));
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Step 3: Sign with Wallet (User Browser)
+      // Step 3: Sign with Wallet
       setStep("signing");
       setProgress(50);
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Step 4: IPFS Upload (Encrypted Data)
+      // Step 4: IPFS Upload
       setStep("uploading");
       setProgress(75);
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const mockCID = `Qm${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`;
+      await new Promise(resolve => setTimeout(resolve, 1200));
 
-      // Step 5: Blockchain Anchoring (Hash + Proof)
+      // Step 5: Blockchain Anchoring
       setStep("anchoring");
       setProgress(90);
-      await new Promise(resolve => setTimeout(resolve, 1200));
+      const mockTxHash = `0x${Math.random().toString(16).substring(2, 12)}`;
+      const mockBlock = Math.floor(19204112 + Math.random() * 100).toString();
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const newReport: Report = {
+        id: `v-${Math.floor(100 + Math.random() * 900)}`,
+        title,
+        content,
+        timestamp: new Date().toISOString(),
+        status: "Pending",
+        category,
+        hash: mockCID,
+        txHash: mockTxHash,
+        block: mockBlock,
+        author: wallet.address,
+        consensus: 0
+      };
+
+      addReport(newReport);
       
       setProgress(100);
       toast({
         title: "Truth Broadcasted",
-        description: "Your report is now decentralized, immutable, and indexed.",
+        description: "Your report is now decentralized and anchored to the ledger.",
       });
       
-      setTitle("");
-      setContent("");
       setTimeout(() => {
-        setStep("idle");
-        setIsSubmitting(false);
-        setProgress(0);
-      }, 1000);
+        router.push("/reports");
+      }, 1500);
 
     } catch (error) {
+      console.error(error);
       toast({
         variant: "destructive",
         title: "Broadcast Failed",
-        description: "Connection to the P2P relay nodes was interrupted.",
+        description: "Network congestion or local signing error.",
       });
       setStep("idle");
       setIsSubmitting(false);
@@ -165,11 +181,6 @@ export function ReportEditor() {
                   {step === "uploading" && "Replicating across IPFS global nodes..."}
                   {step === "anchoring" && "Finalizing block mainnet confirmation..."}
                 </p>
-                {step === "signing" && wallet && (
-                  <p className="text-[10px] font-mono text-accent/70 uppercase">
-                    ID: {wallet.address.slice(0, 10)}...
-                  </p>
-                )}
               </div>
             </div>
           </div>
@@ -185,15 +196,27 @@ export function ReportEditor() {
             </TabsList>
             
             <TabsContent value="editor" className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="title">Report Headline</Label>
-                <Input 
-                  id="title" 
-                  placeholder="Summarize the discovery" 
-                  className="bg-secondary/50 border-white/10"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="md:col-span-2 space-y-2">
+                  <Label htmlFor="title">Report Headline</Label>
+                  <Input 
+                    id="title" 
+                    placeholder="Summarize the discovery" 
+                    className="bg-secondary/50 border-white/10"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="category">Category</Label>
+                  <Input 
+                    id="category" 
+                    placeholder="e.g. Government" 
+                    className="bg-secondary/50 border-white/10"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                  />
+                </div>
               </div>
               
               <div className="space-y-2">

@@ -2,6 +2,9 @@
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
+import { WalletProvider } from "@/components/veritas/WalletProvider";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
   title: 'Veritas | Decentralized Truth Protocol',
@@ -20,8 +23,14 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-body antialiased selection:bg-accent selection:text-white">
-        {children}
+      <body className="font-body antialiased selection:bg-accent selection:text-white flex flex-col min-h-screen">
+        <WalletProvider>
+          <Navbar />
+          <main className="flex-grow">
+            {children}
+          </main>
+          <Footer />
+        </WalletProvider>
         <Toaster />
       </body>
     </html>
