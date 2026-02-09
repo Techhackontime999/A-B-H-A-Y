@@ -26,7 +26,7 @@ export function Navbar() {
               <div className="bg-primary/20 p-2 rounded-lg group-hover:bg-primary/30 transition-colors">
                 <Shield className="h-6 w-6 text-accent" />
               </div>
-              <span className="text-xl font-headline font-bold tracking-tight text-white">VERITAS</span>
+              <span className="text-xl font-headline font-bold tracking-tight text-white uppercase">A-B-H-A-Y</span>
             </Link>
           </div>
 

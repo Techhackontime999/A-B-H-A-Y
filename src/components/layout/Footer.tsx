@@ -1,4 +1,3 @@
-
 import { Shield } from "lucide-react";
 
 export function Footer() {
@@ -9,7 +8,7 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Shield className="h-6 w-6 text-accent" />
-              <span className="text-xl font-headline font-bold text-white">VERITAS</span>
+              <span className="text-xl font-headline font-bold text-white uppercase">A-B-H-A-Y</span>
             </div>
             <p className="text-sm text-muted-foreground max-w-xs">
               Censorship-resistant truth protocol. Powered by IPFS and Blockchain.
@@ -34,7 +33,7 @@ export function Footer() {
               </div>
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-                <span>Solana Proofing Layer Active</span>
+                <span>Blockchain Proofing Layer Active</span>
               </div>
             </div>
           </div>
@@ -42,7 +41,7 @@ export function Footer() {
         
         <div className="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} Veritas Protocol. No central authority.
+            &copy; {new Date().getFullYear()} A-B-H-A-Y Protocol. No central authority.
           </p>
           <div className="flex gap-6 text-xs text-muted-foreground">
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>

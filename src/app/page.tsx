@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { 
@@ -19,13 +18,13 @@ export default function Home() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative py-24 lg:py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(75,0,130,0.15),transparent_70%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(168,85,247,0.1),transparent_70%)]" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center space-y-8 max-w-4xl mx-auto">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-bold tracking-widest uppercase mb-4 animate-fade-in">
               <ShieldAlert className="h-3 w-3" />
-              Whistleblower Safety Protocol
+              A-B-H-A-Y Safety Protocol
             </div>
             
             <h1 className="text-5xl md:text-7xl font-headline font-bold leading-tight tracking-tighter text-white">
@@ -58,7 +57,7 @@ export default function Home() {
               </div>
               <div className="flex items-center gap-2">
                 <LinkIcon className="h-5 w-5" />
-                <span className="text-sm font-headline font-bold">SOLANA</span>
+                <span className="text-sm font-headline font-bold">BLOCKCHAIN</span>
               </div>
               <div className="flex items-center gap-2">
                 <Users className="h-5 w-5" />
@@ -151,8 +150,8 @@ export default function Home() {
             <div className="flex-1 relative">
               <div className="relative z-10 rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
                 <Image 
-                  src="https://picsum.photos/seed/veritas_dashboard/800/600" 
-                  alt="Veritas Dashboard Interface" 
+                  src="https://picsum.photos/seed/abhay_dashboard/800/600" 
+                  alt="A-B-H-A-Y Dashboard Interface" 
                   width={800} 
                   height={600}
                   className="w-full h-auto"

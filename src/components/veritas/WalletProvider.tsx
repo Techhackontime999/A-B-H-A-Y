@@ -20,14 +20,14 @@ export type Report = {
   consensus: number;
 };
 
-type VeritasWallet = {
+type AbhayWallet = {
   address: string;
   reputation: number;
   isStaked: boolean;
 };
 
 type WalletContextType = {
-  wallet: VeritasWallet | null;
+  wallet: AbhayWallet | null;
   reports: Report[];
   connect: () => void;
   disconnect: () => void;
@@ -73,14 +73,14 @@ const INITIAL_REPORTS: Report[] = [
 ];
 
 export function WalletProvider({ children }: { children: React.ReactNode }) {
-  const [wallet, setWallet] = useState<VeritasWallet | null>(null);
+  const [wallet, setWallet] = useState<AbhayWallet | null>(null);
   const [reports, setReports] = useState<Report[]>([]);
 
   useEffect(() => {
-    const savedWallet = localStorage.getItem('veritas_wallet');
+    const savedWallet = localStorage.getItem('abhay_wallet');
     if (savedWallet) setWallet(JSON.parse(savedWallet));
 
-    const savedReports = localStorage.getItem('veritas_reports');
+    const savedReports = localStorage.getItem('abhay_reports');
     if (savedReports) {
       setReports(JSON.parse(savedReports));
     } else {
@@ -90,7 +90,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (reports.length > 0) {
-      localStorage.setItem('veritas_reports', JSON.stringify(reports));
+      localStorage.setItem('abhay_reports', JSON.stringify(reports));
     }
   }, [reports]);
 
@@ -102,19 +102,19 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       isStaked: false 
     };
     setWallet(newWallet);
-    localStorage.setItem('veritas_wallet', JSON.stringify(newWallet));
+    localStorage.setItem('abhay_wallet', JSON.stringify(newWallet));
   };
 
   const disconnect = () => {
     setWallet(null);
-    localStorage.removeItem('veritas_wallet');
+    localStorage.removeItem('abhay_wallet');
   };
 
   const stake = () => {
     if (wallet) {
       const updated = { ...wallet, isStaked: true };
       setWallet(updated);
-      localStorage.setItem('veritas_wallet', JSON.stringify(updated));
+      localStorage.setItem('abhay_wallet', JSON.stringify(updated));
     }
   };
 
@@ -142,7 +142,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     if (wallet) {
       const updated = { ...wallet, reputation: wallet.reputation + (isPositive ? 1 : -1) };
       setWallet(updated);
-      localStorage.setItem('veritas_wallet', JSON.stringify(updated));
+      localStorage.setItem('abhay_wallet', JSON.stringify(updated));
     }
   };
 

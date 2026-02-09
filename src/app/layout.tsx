@@ -1,4 +1,3 @@
-
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
@@ -7,7 +6,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: 'Veritas | Decentralized Truth Protocol',
+  title: 'A-B-H-A-Y | Decentralized Truth Protocol',
   description: 'An anonymous, decentralized reporting platform for whistleblowers and journalists.',
 };
 
