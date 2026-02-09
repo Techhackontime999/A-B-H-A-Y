@@ -14,6 +14,7 @@ type WalletContextType = {
   connect: () => void;
   disconnect: () => void;
   stake: () => void;
+  sign: (message: string) => Promise<string>;
 };
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
@@ -27,9 +28,13 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const connect = () => {
-    // Simulated wallet generation
+    // Simulated decentralized identity generation
     const mockAddress = '0x' + Array(40).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join('');
-    const newWallet = { address: mockAddress, reputation: 50, isStaked: false };
+    const newWallet = { 
+      address: mockAddress, 
+      reputation: 50, 
+      isStaked: false 
+    };
     setWallet(newWallet);
     localStorage.setItem('veritas_wallet', JSON.stringify(newWallet));
   };
@@ -47,8 +52,14 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const sign = async (message: string) => {
+    // Simulate cryptographic signing
+    await new Promise(resolve => setTimeout(resolve, 800));
+    return `sig_${Math.random().toString(36).substr(2, 9)}`;
+  };
+
   return (
-    <WalletContext.Provider value={{ wallet, connect, disconnect, stake }}>
+    <WalletContext.Provider value={{ wallet, connect, disconnect, stake, sign }}>
       {children}
     </WalletContext.Provider>
   );
