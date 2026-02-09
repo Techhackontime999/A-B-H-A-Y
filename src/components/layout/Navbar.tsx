@@ -1,8 +1,7 @@
-
 "use client";
 
 import Link from "next/link";
-import { Shield, Menu, X, Wallet, ShieldCheck, FileText, BarChart3 } from "lucide-react";
+import { Shield, Menu, X, Wallet, ShieldCheck, FileText, BarChart3, PlusCircle } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useWallet } from "@/components/veritas/WalletProvider";
@@ -32,6 +31,14 @@ export function Navbar() {
           </div>
 
           <div className="hidden md:flex items-center gap-8">
+            <Link 
+              href="/submit" 
+              className="flex items-center gap-2 text-sm font-bold text-accent hover:text-accent/80 transition-colors"
+            >
+              <PlusCircle className="h-4 w-4" />
+              Submit Report
+            </Link>
+            
             {navLinks.map((link) => (
               <Link 
                 key={link.name} 
@@ -71,6 +78,12 @@ export function Navbar() {
       {/* Mobile Menu */}
       <div className={cn("md:hidden bg-secondary border-b border-white/5", isOpen ? "block" : "hidden")}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <Link
+            href="/submit"
+            className="block px-3 py-2 text-base font-bold text-accent"
+          >
+            Submit Report
+          </Link>
           {navLinks.map((link) => (
             <Link
               key={link.name}
