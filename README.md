@@ -8,54 +8,111 @@
 
 Many people hesitate to raise genuine complaints because revealing their identity can lead to social, academic, or professional retaliation. **ABHAY** addresses this critical issue by ensuring that no personal identity information is collected, stored, or displayed at any stage of the complaint process.
 
+The system operates without user registration or login and relies on secure session-based anonymity. Each complaint is processed through a multi-layer assessment system that provides decision-support tools to help authorized reviewers evaluate reports responsibly.
+
 ---
 
 ## 🛠 Core Architecture
 
 ### 1. Absolute Anonymity
-- **No Registration/Login**: Operates entirely via session-based anonymity.
-- **Identity Cloaking**: Uses Decentralized Identifiers (DIDs) to anchor reputation without linking to real-world data.
+- **No Registration**: Operates entirely via session-based anonymity.
+- **Client-Side Security**: Data is encrypted locally before being sharded and broadcast.
+- **DID Cloaking**: Uses temporary Decentralized Identifiers (DIDs) to represent users without tracking real-world data.
 
-### 2. Multi-Layer Credibility System (AI-Powered)
-- **Decision-Support Tools**: Unlike other platforms, ABHAY does not automatically judge complaints. It provides AI analysis (via Genkit) to help human reviewers evaluate reports responsibly.
-- **Pattern Correlation**: Analyzes cross-complaint patterns to identify systemic corruption or recurring harassment issues.
-- **Content Quality Analysis**: Distills complex evidence into readable summaries for investigative prioritization.
+### 2. AI-Powered Decision Support (Genkit)
+- **Content Quality Analysis**: Distills complex evidence into readable summaries.
+- **Expert Frameworks**: Analyzes legal, ethical, and societal implications to assist human investigators.
+- **Pattern Correlation**: Identifies systemic issues across multiple anonymous reports.
+- **Voice Intelligence**: Converts AI insights into audio for accessibility.
 
 ### 3. Immutable Transparency
-- **IPFS Sharding**: Reports are sharded and distributed across decentralized nodes.
-- **Blockchain Anchoring**: Content CIDs are anchored to a public ledger, creating an immutable "Proof of Existence" that prevents redaction by authorities.
+- **Decentralized Storage**: Reports are sharded across IPFS nodes (Simulated).
+- **Public Ledger**: Content CIDs are anchored to a public ledger for immutable proof-of-existence.
 
 ---
 
-## 🧠 Tech Stack
+## ⚙️ Installation & Setup
 
-- **Framework**: [Next.js 15+](https://nextjs.org/) (React 19)
-- **AI Engine**: [Genkit AI](https://js.genkit.dev/) (Powered by Google Gemini)
-- **Decentralized Storage**: IPFS (Simulated)
-- **Blockchain**: Public Ledger (Simulated Anchor Events)
-- **Styling**: Tailwind CSS + ShadCN UI
-- **Icons**: Lucide React
+### Prerequisites
+- **Node.js**: Version 18 or higher.
+- **NPM** or **Bun** package manager.
+- **Gemini API Key**: Required for Genkit AI features. Get one at [Google AI Studio](https://aistudio.google.com/).
+
+### Steps
+
+1. **Clone the Repository**
+   ```bash
+   git clone <repository-url>
+   cd abhay
+   ```
+
+2. **Install Dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Configure Environment Variables**
+   Create a `.env` file in the root directory:
+   ```env
+   GOOGLE_GENAI_API_KEY=your_api_key_here
+   ```
+
+4. **Launch Development Server**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:9002](http://localhost:9002) in your browser.
+
+5. **Start Genkit Developer UI (Optional)**
+   To inspect and debug AI flows:
+   ```bash
+   npm run genkit:dev
+   ```
 
 ---
 
-## 📖 How to Use
+## 💻 Development Workflow
 
-### For Reporters
-1. **Cloak**: Generate your session identity (DID).
-2. **Compose**: Use the **Evidence Vault** to write your report. All data is encrypted client-side.
-3. **Broadcast**: Sign and anchor your report. It becomes an immutable record in the Registry.
+### Project Structure
+- `src/app`: Next.js App Router (Pages & Layouts).
+- `src/components/ui`: ShadCN UI components.
+- `src/components/veritas`: Core protocol components (Editor, Wallet, DAO).
+- `src/ai/flows`: Genkit AI logic (Summaries, Expert Analysis, Anti-spam).
+- `src/hooks`: Custom React hooks for state and UI management.
 
-### For Reviewers (The DAO)
-1. **Audit**: Review the pending queue of anonymous complaints.
-2. **Analyze**: Use AI-generated **Expert Analysis** to see legal and ethical implications.
-3. **Vote**: Stake your reputation on the credibility of the evidence to help prioritize justice.
+### Adding New AI Flows
+1. Define the input/output schema in `src/ai/flows/`.
+2. Register the flow in `src/ai/dev.ts`.
+3. Export a server function for the UI to call.
+
+---
+
+## 🤖 AI Multi-Layer Assessment
+
+ABHAY uses several specialized Genkit flows to maintain platform integrity:
+- **`summarize-report`**: Converts raw evidence into public-friendly insights.
+- **`expert-analysis`**: Provides investigators with legal and ethical context.
+- **`prevent-duplicate-reports`**: Flags potential spam or correlated misconduct.
+- **`voice-summary`**: Uses Gemini TTS to generate audio insights.
+
+---
+
+## 🤝 Collaboration & Contribution
+
+We welcome contributors focused on privacy, human rights, and decentralized technology.
+
+1. **Fork & Branch**: Create a feature branch from `main`.
+2. **Code Standards**: Ensure TypeScript types are strictly followed. Use ShadCN for UI consistency.
+3. **Security First**: Never add logging that tracks IP addresses or user agents.
+4. **Pull Requests**: Provide a clear description of the feature or fix.
 
 ---
 
 ## 🛡 Ethical Safeguards
-- **Abuse Detection**: AI flows prevent spam and duplicate reports.
-- **Transparency**: All administrative actions are logged on the public ledger.
-- **Accountability**: Reviewers must stake reputation, ensuring "skin in the game" for every vote.
+- **No Judging**: The AI provides frameworks, not final verdicts.
+- **Abuse Detection**: AI-powered similarity checks prevent duplicate spam.
+- **Transparency**: All administrative "anchor" events are logged on the public transparency ledger.
+- **Accountability**: Reviewers must stake reputation, ensuring "skin in the game."
 
 ---
 
