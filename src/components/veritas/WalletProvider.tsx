@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
@@ -46,7 +47,7 @@ const INITIAL_REPORTS: Report[] = [
     content: "Internal documents show a significant oil leak was detected three months before public disclosure at the Northern Rig site.",
     summary: "Evidence of a 3-month cover-up regarding a major oil leak at the Northern Rig site.",
     impactLevel: "High",
-    timestamp: new Date(Date.now() - 86400000 * 2).toISOString(),
+    timestamp: "2024-03-01T10:00:00.000Z",
     status: "Verified",
     category: "Environment",
     hash: "QmXoyp88219327",
@@ -61,7 +62,7 @@ const INITIAL_REPORTS: Report[] = [
     content: "Unlabeled funding sources linked to major development firms discovered in local council campaign ledgers.",
     summary: "Illegal campaign funding from development firms discovered in local election records.",
     impactLevel: "Critical",
-    timestamp: new Date(Date.now() - 86400000).toISOString(),
+    timestamp: "2024-03-02T14:30:00.000Z",
     status: "Pending",
     category: "Government",
     hash: "QmYtz9910283",
@@ -120,7 +121,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
   const sign = async (message: string) => {
     await new Promise(resolve => setTimeout(resolve, 800));
-    return `sig_${Math.random().toString(36).substr(2, 9)}`;
+    return `sig_${Math.random().toString(36).substring(2, 11)}`;
   };
 
   const addReport = (report: Report) => {

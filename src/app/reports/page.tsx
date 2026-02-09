@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Badge } from "@/components/ui/badge";
@@ -27,18 +28,31 @@ import {
   DialogFooter
 } from "@/components/ui/dialog";
 import { useWallet, Report } from "@/components/veritas/WalletProvider";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
 
 export default function ReportsFeed() {
   const { reports } = useWallet();
   const [search, setSearch] = useState("");
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const filteredReports = reports.filter(r => 
     r.title.toLowerCase().includes(search.toLowerCase()) || 
     r.hash.toLowerCase().includes(search.toLowerCase())
   );
+
+  if (!isMounted) {
+    return (
+      <div className="min-h-screen pt-32 flex items-center justify-center">
+        <div className="animate-pulse text-accent font-headline font-bold">Synchronizing Truth Layer...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pt-32 pb-24">

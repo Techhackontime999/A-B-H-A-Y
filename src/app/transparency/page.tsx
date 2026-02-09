@@ -6,15 +6,22 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Link as LinkIcon, Database, Shield, Activity, Search } from "lucide-react";
 import { useWallet } from "@/components/veritas/WalletProvider";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function TransparencyPage() {
   const { reports } = useWallet();
   const [filter, setFilter] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const filteredReports = reports.filter(r => 
     r.block.includes(filter) || r.txHash.includes(filter) || r.hash.includes(filter)
   );
+
+  if (!isMounted) return null;
 
   return (
     <div className="min-h-screen pt-24 pb-16">
