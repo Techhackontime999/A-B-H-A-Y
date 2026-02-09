@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
@@ -9,6 +8,8 @@ export type Report = {
   id: string;
   title: string;
   content: string;
+  summary?: string;
+  impactLevel?: 'Low' | 'Medium' | 'High' | 'Critical';
   timestamp: string;
   status: ReportStatus;
   category: string;
@@ -43,6 +44,8 @@ const INITIAL_REPORTS: Report[] = [
     id: "v-001",
     title: "Offshore Drilling Leak Cover-up",
     content: "Internal documents show a significant oil leak was detected three months before public disclosure at the Northern Rig site.",
+    summary: "Evidence of a 3-month cover-up regarding a major oil leak at the Northern Rig site.",
+    impactLevel: "High",
     timestamp: new Date(Date.now() - 86400000 * 2).toISOString(),
     status: "Verified",
     category: "Environment",
@@ -56,6 +59,8 @@ const INITIAL_REPORTS: Report[] = [
     id: "v-002",
     title: "Election Finance Irregularities in District 7",
     content: "Unlabeled funding sources linked to major development firms discovered in local council campaign ledgers.",
+    summary: "Illegal campaign funding from development firms discovered in local election records.",
+    impactLevel: "Critical",
     timestamp: new Date(Date.now() - 86400000).toISOString(),
     status: "Pending",
     category: "Government",

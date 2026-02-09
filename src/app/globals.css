@@ -1,43 +1,37 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 273 47% 11%;
+    --background: 273 60% 5%;
     --foreground: 0 0% 98%;
-    --card: 273 47% 13%;
+    --card: 273 40% 8%;
     --card-foreground: 0 0% 98%;
-    --popover: 273 47% 11%;
+    --popover: 273 60% 5%;
     --popover-foreground: 0 0% 98%;
     --primary: 275 100% 25%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 273 47% 18%;
+    --secondary: 273 40% 12%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 273 20% 25%;
-    --muted-foreground: 273 10% 70%;
-    --accent: 277 87% 53%;
+    --muted: 273 20% 15%;
+    --muted-foreground: 273 10% 65%;
+    --accent: 280 100% 65%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 273 30% 20%;
-    --input: 273 30% 20%;
-    --ring: 277 87% 53%;
-    --chart-1: 275 100% 25%;
-    --chart-2: 277 87% 53%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.75rem;
-    --sidebar-background: 273 47% 10%;
+    --border: 273 30% 15%;
+    --input: 273 30% 15%;
+    --ring: 280 100% 65%;
+    --radius: 1.25rem;
+    --sidebar-background: 273 60% 4%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 275 100% 25%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 273 47% 15%;
+    --sidebar-accent: 273 47% 12%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 273 30% 18%;
-    --sidebar-ring: 277 87% 53%;
+    --sidebar-border: 273 30% 12%;
+    --sidebar-ring: 280 100% 65%;
   }
 }
 
@@ -48,8 +42,28 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    background-image: 
+      radial-gradient(at 0% 0%, hsla(273, 60%, 15%, 0.1) 0, transparent 50%),
+      radial-gradient(at 100% 0%, hsla(280, 100%, 15%, 0.1) 0, transparent 50%);
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-headline tracking-tight;
   }
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.2);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 85, 247, 0.4);
 }
