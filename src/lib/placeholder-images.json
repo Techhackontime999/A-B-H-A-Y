@@ -1,3 +1,22 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-abstract",
+      "description": "Abstract security and data visualization",
+      "imageUrl": "https://images.unsplash.com/photo-1768839722988-91767bb82b10?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzZWN1cml0eSUyMG5ldHdvcmt8ZW58MHx8fHwxNzcwNjMwMTQ4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "security network"
+    },
+    {
+      "id": "feature-encryption",
+      "description": "Encryption and privacy visualization",
+      "imageUrl": "https://images.unsplash.com/photo-1768839720936-87ce3adf2d08?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjeWJlcnNlY3VyaXR5JTIwbG9ja3xlbnwwfHx8fDE3NzA2NTE1NDJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cybersecurity lock"
+    },
+    {
+      "id": "feature-decentralized",
+      "description": "Decentralized network nodes",
+      "imageUrl": "https://images.unsplash.com/photo-1731690435374-5d8b4f1a3d47?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxkZWNlbnRyYWxpemVkJTIwbmV0d29ya3xlbnwwfHx8fDE3NzA2NTE1NDJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "decentralized network"
+    }
+  ]
 }
