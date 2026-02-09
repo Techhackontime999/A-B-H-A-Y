@@ -4,15 +4,34 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Search, ExternalLink, Calendar, Hash, ShieldCheck, AlertCircle } from "lucide-react";
-import { useWallet } from "@/components/veritas/WalletProvider";
-import Link from "next/link";
+import { 
+  Search, 
+  ExternalLink, 
+  Calendar, 
+  Hash, 
+  ShieldCheck, 
+  AlertCircle, 
+  Lock, 
+  Database, 
+  Link as LinkIcon, 
+  Clock 
+} from "lucide-react";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogDescription,
+  DialogFooter
+} from "@/components/ui/dialog";
+import { useWallet, Report } from "@/components/veritas/WalletProvider";
 import { useState } from "react";
+import { Separator } from "@/components/ui/separator";
 
 export default function ReportsFeed() {
   const { reports } = useWallet();
   const [search, setSearch] = useState("");
+  const [selectedReport, setSelectedReport] = useState<Report | null>(null);
 
   const filteredReports = reports.filter(r => 
     r.title.toLowerCase().includes(search.toLowerCase()) || 
@@ -90,7 +109,12 @@ export default function ReportsFeed() {
                       </div>
                     </div>
                     
-                    <Button variant="ghost" size="sm" className="text-accent hover:text-accent hover:bg-accent/10 gap-2 w-fit">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="text-accent hover:text-accent hover:bg-accent/10 gap-2 w-fit"
+                      onClick={() => setSelectedReport(report)}
+                    >
                       View Report <ExternalLink className="h-3 w-3" />
                     </Button>
                   </div>
@@ -116,7 +140,7 @@ export default function ReportsFeed() {
                 <div className="space-y-1">
                   <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">Verification Rate</p>
                   <p className="text-3xl font-headline font-bold text-white tracking-tighter">
-                    {((reports.filter(r => r.status === 'Verified').length / reports.length) * 100).toFixed(1)}%
+                    {reports.length > 0 ? ((reports.filter(r => r.status === 'Verified').length / reports.length) * 100).toFixed(1) : 0}%
                   </p>
                 </div>
                 <div className="space-y-1">
@@ -124,15 +148,74 @@ export default function ReportsFeed() {
                   <p className="text-3xl font-headline font-bold text-white tracking-tighter">15,402</p>
                 </div>
                 <div className="pt-4 border-t border-white/5">
-                  <Link href="/verify">
-                    <Button className="w-full bg-accent hover:bg-accent/90">Join the DAO</Button>
-                  </Link>
+                  <Button className="w-full bg-accent hover:bg-accent/90" asChild>
+                    <a href="/verify">Join the DAO</a>
+                  </Button>
                 </div>
               </CardContent>
             </Card>
           </div>
         </div>
       </div>
+
+      <Dialog open={!!selectedReport} onOpenChange={(open) => !open && setSelectedReport(null)}>
+        {selectedReport && (
+          <DialogContent className="max-w-3xl bg-card border-white/10 max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <div className="flex items-center gap-2 mb-2">
+                <Badge variant="outline" className="text-accent border-accent/20 font-mono text-[10px] uppercase">
+                  {selectedReport.category}
+                </Badge>
+                <Badge variant="secondary" className="text-[10px] font-bold uppercase">
+                  {selectedReport.status}
+                </Badge>
+              </div>
+              <DialogTitle className="text-3xl font-headline font-bold text-white">
+                {selectedReport.title}
+              </DialogTitle>
+              <DialogDescription className="flex items-center gap-4 text-xs font-mono pt-2">
+                <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {new Date(selectedReport.timestamp).toLocaleString()}</span>
+                <span className="flex items-center gap-1"><Hash className="h-3 w-3" /> CID: {selectedReport.hash.slice(0, 10)}...</span>
+              </DialogDescription>
+            </DialogHeader>
+
+            <Separator className="bg-white/5 my-4" />
+
+            <div className="space-y-6">
+              <div className="bg-white/[0.02] p-6 rounded-xl border border-white/5">
+                <div className="flex items-center gap-2 text-accent mb-4 font-bold text-xs uppercase tracking-widest">
+                  <Lock className="h-3 w-3" /> Decrypted Evidence
+                </div>
+                <p className="text-muted-foreground leading-relaxed whitespace-pre-wrap font-body">
+                  {selectedReport.content}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 rounded-lg bg-secondary/30 border border-white/5 space-y-2">
+                  <div className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                    <Database className="h-3 w-3" /> IPFS Storage
+                  </div>
+                  <p className="font-mono text-[10px] break-all text-white/70">{selectedReport.hash}</p>
+                </div>
+                <div className="p-4 rounded-lg bg-secondary/30 border border-white/5 space-y-2">
+                  <div className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                    <LinkIcon className="h-3 w-3" /> Blockchain Anchor
+                  </div>
+                  <p className="font-mono text-[10px] break-all text-white/70">TX: {selectedReport.txHash}</p>
+                  <p className="font-mono text-[10px] text-accent">Block: {selectedReport.block}</p>
+                </div>
+              </div>
+            </div>
+
+            <DialogFooter className="mt-8">
+              <Button variant="outline" onClick={() => setSelectedReport(null)} className="border-white/10">
+                Close Registry Entry
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        )}
+      </Dialog>
     </div>
   );
 }
