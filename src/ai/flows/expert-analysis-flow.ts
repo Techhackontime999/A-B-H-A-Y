@@ -1,7 +1,7 @@
-
 'use server';
 /**
- * @fileOverview AI flow to provide a deep, expert analysis of a whistleblower report.
+ * @fileOverview AI flow to provide decision-support analysis for A-B-H-A-Y complaints.
+ * This tool does NOT judge truth, but provides evaluative frameworks for human reviewers.
  */
 
 import {ai} from '@/ai/genkit';
@@ -13,10 +13,11 @@ const ExpertAnalysisInputSchema = z.object({
 export type ExpertAnalysisInput = z.infer<typeof ExpertAnalysisInputSchema>;
 
 const ExpertAnalysisOutputSchema = z.object({
-  legalImplications: z.string().describe('Potential legal consequences or laws involved.'),
-  ethicalAnalysis: z.string().describe('A breakdown of the ethical violations.'),
-  societalImpact: z.string().describe('How this affects the general public.'),
-  actionableSteps: z.array(z.string()).describe('Recommended next steps for journalists or investigators.'),
+  legalImplications: z.string().describe('Relevant laws or legal precedents to consider.'),
+  ethicalAnalysis: z.string().describe('A breakdown of the ethical concerns raised.'),
+  societalImpact: z.string().describe('How this issue might affect the public or institution.'),
+  investigativeLeads: z.array(z.string()).describe('Suggested areas for manual verification or investigation.'),
+  patternCorrelation: z.string().describe('Potential patterns or systemic issues hinted at by this content.'),
 });
 export type ExpertAnalysisOutput = z.infer<typeof ExpertAnalysisOutputSchema>;
 
@@ -28,10 +29,12 @@ const prompt = ai.definePrompt({
   name: 'expertAnalysisPrompt',
   input: {schema: ExpertAnalysisInputSchema},
   output: {schema: ExpertAnalysisOutputSchema},
-  prompt: `You are a senior investigative consultant with expertise in law and ethics. 
-  Analyze the following whistleblower report and provide a deep, professional breakdown.
+  prompt: `You are an AI decision-support agent for the A-B-H-A-Y Justice Support platform. 
+  Your goal is to assist authorized human reviewers in evaluating anonymous complaints responsibly.
   
-  Report:
+  CRITICAL: Do not attempt to judge whether the report is definitely true or false. Instead, provide investigative frameworks, legal context, and ethical breakdowns that help human investigators prioritize and evaluate the report.
+  
+  Analyze the following content:
   {{{content}}}`,
 });
 

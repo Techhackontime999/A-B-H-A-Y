@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Badge } from "@/components/ui/badge";
@@ -23,7 +22,8 @@ import {
   ChevronRight,
   Gavel,
   Zap,
-  CheckCircle2
+  CheckCircle2,
+  Network
 } from "lucide-react";
 import { 
   Dialog, 
@@ -70,7 +70,7 @@ export default function ReportsFeed() {
       toast({
         variant: "destructive",
         title: "Analysis Failed",
-        description: "Could not reach the expert intelligence layer.",
+        description: "Could not reach the decision-support layer.",
       });
     } finally {
       setIsAnalyzing(false);
@@ -115,7 +115,7 @@ export default function ReportsFeed() {
             </p>
           </div>
           
-          <div className="flex items-center gap-4 w-full md:w-fit">
+          <div className="flex items-center gap-4 w-full md:w:fit">
             <div className="relative flex-grow md:w-96 group">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-accent transition-colors" />
               <input 
@@ -125,9 +125,6 @@ export default function ReportsFeed() {
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            <Button variant="outline" size="icon" className="h-14 w-14 rounded-2xl border-white/10 hover:bg-white/5">
-              <Filter className="h-5 w-5" />
-            </Button>
           </div>
         </div>
 
@@ -202,7 +199,7 @@ export default function ReportsFeed() {
                       variant="ghost" 
                       className="text-accent hover:text-accent hover:bg-accent/10 font-bold gap-2 text-sm group/btn p-0 h-auto"
                     >
-                      Audit Record <ChevronRight className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                      View Justice Record <ChevronRight className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
                     </Button>
                   </div>
                 </CardContent>
@@ -218,22 +215,22 @@ export default function ReportsFeed() {
             <Card className="bg-primary/5 border-primary/20 sticky top-28 overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-accent/10 rounded-full blur-[80px]" />
               <CardHeader>
-                <CardTitle className="text-xl font-headline font-bold text-white tracking-tight">Protocol Vitals</CardTitle>
+                <CardTitle className="text-xl font-headline font-bold text-white tracking-tight">Justice Metrics</CardTitle>
               </CardHeader>
               <CardContent className="space-y-8 relative z-10">
                 <div className="space-y-2">
-                  <p className="text-[10px] text-muted-foreground uppercase tracking-[0.3em] font-bold">Anchored Truths</p>
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-[0.3em] font-bold">Anonymous Complaints</p>
                   <p className="text-5xl font-headline font-bold text-white tracking-tighter">{reports.length}</p>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-[10px] text-muted-foreground uppercase tracking-[0.3em] font-bold">Consensus Ratio</p>
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-[0.3em] font-bold">Consensus Support</p>
                   <p className="text-5xl font-headline font-bold text-white tracking-tighter">
                     {reports.length > 0 ? ((reports.filter(r => r.status === 'Verified').length / reports.length) * 100).toFixed(0) : 0}%
                   </p>
                 </div>
                 <Separator className="bg-white/10" />
                 <Button className="w-full h-14 bg-accent hover:bg-accent/90 text-lg font-bold rounded-xl shadow-xl shadow-accent/20" asChild>
-                  <a href="/verify">Audit the Network</a>
+                  <a href="/verify">Join the Council</a>
                 </Button>
               </CardContent>
             </Card>
@@ -290,13 +287,13 @@ export default function ReportsFeed() {
               <div className="px-10 pt-6">
                 <TabsList className="bg-secondary/50 border border-white/5 p-1 rounded-xl">
                   <TabsTrigger value="summary" className="gap-2 px-6 rounded-lg data-[state=active]:bg-primary">
-                    <Sparkles className="h-4 w-4" /> Insight
+                    <Sparkles className="h-4 w-4" /> Support Summary
                   </TabsTrigger>
                   <TabsTrigger value="analysis" className="gap-2 px-6 rounded-lg data-[state=active]:bg-primary" onClick={() => !analysis && handleFetchAnalysis(selectedReport)}>
-                    <FileSearch className="h-4 w-4" /> Expert Analysis
+                    <FileSearch className="h-4 w-4" /> Decision Support
                   </TabsTrigger>
                   <TabsTrigger value="raw" className="gap-2 px-6 rounded-lg data-[state=active]:bg-primary">
-                    <Lock className="h-4 w-4" /> Original Evidence
+                    <Lock className="h-4 w-4" /> Encrypted Evidence
                   </TabsTrigger>
                 </TabsList>
               </div>
@@ -306,7 +303,7 @@ export default function ReportsFeed() {
                   {selectedReport.summary && (
                     <div className="bg-primary/10 p-8 rounded-2xl border border-primary/20 space-y-4">
                       <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent flex items-center gap-2">
-                        <Zap className="h-3 w-3" /> Core Intelligence Summary
+                        <Zap className="h-3 w-3" /> AI Insight Summary
                       </h4>
                       <p className="text-xl text-white font-light leading-relaxed italic">
                         "{selectedReport.summary}"
@@ -316,24 +313,24 @@ export default function ReportsFeed() {
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <Card className="bg-white/[0.02] border-white/5 p-6">
-                      <h5 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-4">Storage Layer</h5>
+                      <h5 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-4">Storage CID</h5>
                       <div className="space-y-4">
                         <div className="flex items-center gap-3">
                           <Database className="h-5 w-5 text-accent" />
                           <div>
-                            <p className="text-xs text-white font-bold">IPFS CID</p>
+                            <p className="text-xs text-white font-bold">Decentralized Content Hash</p>
                             <p className="text-[10px] font-mono text-muted-foreground truncate w-40">{selectedReport.hash}</p>
                           </div>
                         </div>
                       </div>
                     </Card>
                     <Card className="bg-white/[0.02] border-white/5 p-6">
-                      <h5 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-4">Chain Anchor</h5>
+                      <h5 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-4">Justice Chain Anchor</h5>
                       <div className="space-y-4">
                         <div className="flex items-center gap-3">
                           <LinkIcon className="h-5 w-5 text-accent" />
                           <div>
-                            <p className="text-xs text-white font-bold">Transaction</p>
+                            <p className="text-xs text-white font-bold">Transaction Ledger</p>
                             <p className="text-[10px] font-mono text-muted-foreground truncate w-40">{selectedReport.txHash}</p>
                           </div>
                         </div>
@@ -346,34 +343,44 @@ export default function ReportsFeed() {
                   {isAnalyzing ? (
                     <div className="py-20 flex flex-col items-center justify-center gap-4">
                       <div className="h-10 w-10 border-4 border-accent/20 border-t-accent rounded-full animate-spin" />
-                      <p className="text-xs text-muted-foreground uppercase font-bold tracking-widest">Consulting Ethics Council...</p>
+                      <p className="text-xs text-muted-foreground uppercase font-bold tracking-widest">Generating Decision Support Framework...</p>
                     </div>
                   ) : analysis ? (
                     <div className="space-y-10">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-3">
                           <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                            <Gavel className="h-4 w-4 text-accent" /> Legal Implications
+                            <Gavel className="h-4 w-4 text-accent" /> Legal Considerations
                           </h4>
                           <p className="text-sm text-muted-foreground leading-relaxed">{analysis.legalImplications}</p>
                         </div>
                         <div className="space-y-3">
                           <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                            <ShieldCheck className="h-4 w-4 text-accent" /> Ethical Analysis
+                            <ShieldCheck className="h-4 w-4 text-accent" /> Ethical Framework
                           </h4>
                           <p className="text-sm text-muted-foreground leading-relaxed">{analysis.ethicalAnalysis}</p>
                         </div>
                       </div>
-                      <div className="space-y-3">
-                        <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                          <TrendingUp className="h-4 w-4 text-accent" /> Societal Impact
-                        </h4>
-                        <p className="text-sm text-muted-foreground leading-relaxed">{analysis.societalImpact}</p>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="space-y-3">
+                          <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                            <Network className="h-4 w-4 text-accent" /> Pattern Correlation
+                          </h4>
+                          <p className="text-sm text-muted-foreground leading-relaxed">{analysis.patternCorrelation}</p>
+                        </div>
+                        <div className="space-y-3">
+                          <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                            <TrendingUp className="h-4 w-4 text-accent" /> Institutional Impact
+                          </h4>
+                          <p className="text-sm text-muted-foreground leading-relaxed">{analysis.societalImpact}</p>
+                        </div>
                       </div>
+
                       <div className="bg-accent/5 p-6 rounded-2xl border border-accent/10">
-                        <h4 className="text-[10px] font-bold uppercase tracking-widest text-accent mb-4">Recommended Actions</h4>
+                        <h4 className="text-[10px] font-bold uppercase tracking-widest text-accent mb-4">Investigative Leads (Non-Judgmental)</h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          {analysis.actionableSteps.map((step, i) => (
+                          {analysis.investigativeLeads.map((step, i) => (
                             <div key={i} className="flex gap-3 text-sm text-white/80">
                               <CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-0.5" />
                               {step}
@@ -385,7 +392,7 @@ export default function ReportsFeed() {
                   ) : (
                     <div className="text-center py-20">
                       <Button onClick={() => handleFetchAnalysis(selectedReport)} className="bg-accent font-bold">
-                        Generate Expert Analysis
+                        Analyze Decision Framework
                       </Button>
                     </div>
                   )}
@@ -393,7 +400,7 @@ export default function ReportsFeed() {
 
                 <TabsContent value="raw" className="m-0 animate-in fade-in duration-300">
                   <div className="space-y-4">
-                    <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">Original Encrypted Evidence</h4>
+                    <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">Original Anonymous Submission</h4>
                     <div className="bg-white/[0.02] p-8 rounded-2xl border border-white/5">
                       <p className="text-muted-foreground/90 leading-relaxed whitespace-pre-wrap font-body text-lg font-light">
                         {selectedReport.content}
@@ -409,7 +416,7 @@ export default function ReportsFeed() {
                 Close Record
               </Button>
               <Button className="h-12 px-8 rounded-xl bg-accent hover:bg-accent/90 font-bold shadow-lg shadow-accent/20">
-                Download Immutable Proof
+                Download Cryptographic Proof
               </Button>
             </DialogFooter>
           </DialogContent>

@@ -1,113 +1,62 @@
-# A-B-H-A-Y Protocol: Decentralized Truth & Transparency
+# ABHAY – Anonymous Complaint & Justice Support Platform
 
-**A-B-H-A-Y** (Anonymous Blockchain-Hardened Audit Yield) is a premium, end-to-end encrypted reporting protocol designed for whistleblowers, investigative journalists, and transparency advocates. It leverages decentralized storage and AI-powered intelligence to ensure that truth remains immutable and accessible.
-
----
-
-## 🚀 Quick Start: Installation
-
-A-B-H-A-Y is built with the **Next.js App Router**, **Tailwind CSS**, and **Genkit AI**.
-
-### Prerequisites
-- Node.js 18+ 
-- A Gemini API Key (for Genkit AI features)
-
-### Local Setup
-1. **Clone the repository** (or download the prototype files).
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-3. **Environment Variables**:
-   Create a `.env` file in the root and add your Gemini API Key:
-   ```env
-   GOOGLE_GENAI_API_KEY=your_api_key_here
-   ```
-4. **Run the Development Server**:
-   ```bash
-   npm run dev
-   ```
-   Open [http://localhost:9002](http://localhost:9002) to view the protocol in action.
+**ABHAY** is a privacy-first anonymous complaint portal designed to empower individuals to report misconduct, harassment, corruption, or injustice without fear of identity exposure.
 
 ---
 
-## 🛠 Tech Stack
+## 🚀 The Mission
+
+Many people hesitate to raise genuine complaints because revealing their identity can lead to social, academic, or professional retaliation. **ABHAY** addresses this critical issue by ensuring that no personal identity information is collected, stored, or displayed at any stage of the complaint process.
+
+---
+
+## 🛠 Core Architecture
+
+### 1. Absolute Anonymity
+- **No Registration/Login**: Operates entirely via session-based anonymity.
+- **Identity Cloaking**: Uses Decentralized Identifiers (DIDs) to anchor reputation without linking to real-world data.
+
+### 2. Multi-Layer Credibility System (AI-Powered)
+- **Decision-Support Tools**: Unlike other platforms, ABHAY does not automatically judge complaints. It provides AI analysis (via Genkit) to help human reviewers evaluate reports responsibly.
+- **Pattern Correlation**: Analyzes cross-complaint patterns to identify systemic corruption or recurring harassment issues.
+- **Content Quality Analysis**: Distills complex evidence into readable summaries for investigative prioritization.
+
+### 3. Immutable Transparency
+- **IPFS Sharding**: Reports are sharded and distributed across decentralized nodes.
+- **Blockchain Anchoring**: Content CIDs are anchored to a public ledger, creating an immutable "Proof of Existence" that prevents redaction by authorities.
+
+---
+
+## 🧠 Tech Stack
 
 - **Framework**: [Next.js 15+](https://nextjs.org/) (React 19)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) + [ShadCN UI](https://ui.shadcn.com/)
-- **AI Engine**: [Genkit AI](https://js.genkit.dev/) (powered by Google Gemini)
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **Charts**: [Recharts](https://recharts.org/)
-- **State Management**: React Context (Wallet & Protocol state)
+- **AI Engine**: [Genkit AI](https://js.genkit.dev/) (Powered by Google Gemini)
+- **Decentralized Storage**: IPFS (Simulated)
+- **Blockchain**: Public Ledger (Simulated Anchor Events)
+- **Styling**: Tailwind CSS + ShadCN UI
+- **Icons**: Lucide React
 
 ---
 
-## 🧠 How it Works (The Architecture)
+## 📖 How to Use
 
-A-B-H-A-Y operates on a four-layer architecture to ensure maximum safety and transparency:
+### For Reporters
+1. **Cloak**: Generate your session identity (DID).
+2. **Compose**: Use the **Evidence Vault** to write your report. All data is encrypted client-side.
+3. **Broadcast**: Sign and anchor your report. It becomes an immutable record in the Registry.
 
-### 1. Identity Layer (DID)
-Instead of accounts, users generate a **Decentralized Identifier (DID)** via a cryptographic wallet simulation. This cloaks the user's real identity while providing a unique anchor for reputation.
-
-### 2. Encryption Layer (The Vault)
-When a report is composed, it is encrypted client-side using **AES-256**. The protocol ensures that raw, unencrypted data never leaves the user's browser until it is sharded.
-
-### 3. Storage & Proof Layer (IPFS + Blockchain)
-- **IPFS**: Data is sharded and distributed across decentralized nodes, generating a unique Content Identifier (CID).
-- **Blockchain**: The CID is anchored to a public ledger with a transaction hash, providing a timestamped "Proof of Existence" that is immutable.
-
-### 4. Intelligence Layer (Genkit AI)
-A-B-H-A-Y uses **Genkit** to perform three critical automated tasks:
-- **Duplicate Detection**: Prevents the registry from being spammed with repetitive information.
-- **AI Summarization**: Distills complex evidence into readable summaries for the general public.
-- **Expert Analysis**: Provides deep-dive insights into the legal and ethical implications of a report.
-- **Voice Synthesis**: Converts summaries into high-quality audio for better accessibility.
+### For Reviewers (The DAO)
+1. **Audit**: Review the pending queue of anonymous complaints.
+2. **Analyze**: Use AI-generated **Expert Analysis** to see legal and ethical implications.
+3. **Vote**: Stake your reputation on the credibility of the evidence to help prioritize justice.
 
 ---
 
-## 📖 User Guide
-
-### For Whistleblowers
-1. **Connect**: Generate your DID via the "Generate DID" button.
-2. **Compose**: Use the **Evidence Vault** to write your report.
-3. **Preview**: Check the "Secure Preview" to see the encrypted state.
-4. **Broadcast**: Submit the report. It will step through encryption, signing, and anchoring in real-time.
-
-### For Verifiers (The DAO)
-1. **Stake**: Go to the **Verify** page and stake your reputation to join the council.
-2. **Audit**: Review the "Pending" queue of reports.
-3. **Vote**: Stake your reputation on whether a report is authentic or misinformation.
-4. **Rank Up**: Correct votes increase your reputation, moving you up the **Elite Leaderboard**.
+## 🛡 Ethical Safeguards
+- **Abuse Detection**: AI flows prevent spam and duplicate reports.
+- **Transparency**: All administrative actions are logged on the public ledger.
+- **Accountability**: Reviewers must stake reputation, ensuring "skin in the game" for every vote.
 
 ---
 
-## 📂 Project Structure
-
-```text
-src/
-├── ai/                # Genkit AI Flows & Prompts
-│   ├── flows/         # Logical AI pipelines (Summaries, Analysis, TTS)
-│   └── genkit.ts      # Genkit initialization
-├── app/               # Next.js App Router (Pages & Layouts)
-│   ├── reports/       # The Truth Registry
-│   ├── submit/        # Secure Editor
-│   ├── transparency/  # Public Ledger & Network Analytics
-│   └── verify/        # DAO Governance Dashboard
-├── components/        # UI Components
-│   ├── ui/            # ShadCN atomic components
-│   ├── layout/        # Navbar & Footer
-│   └── veritas/       # Feature-specific protocol components
-└── lib/               # Utilities & Global State
-```
-
----
-
-## 🛡 Ethical Guidelines
-A-B-H-A-Y is a tool for transparency. We encourage users to:
-- Verify information before voting.
-- Never use the platform for harassment or dox individuals.
-- Use a VPN/Tor for maximum anonymity during the broadcast phase.
-
----
-
-*This project is a high-fidelity prototype built within Firebase Studio.*
+*ABHAY is designed as a supportive bridge between truth-seekers and justice systems, offering a safe channel for fearless expression while maintaining legal and ethical accountability.*
