@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import { Lock, FileText, Send, Eye, ShieldCheck, Database, Link as LinkIcon, Cpu, Fingerprint, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { preventDuplicateReports } from "@/ai/flows/prevent-duplicate-reports";
@@ -56,7 +57,6 @@ export function ReportEditor() {
     setIsSubmitting(true);
     
     try {
-      // Step 1: AI Integrity Check
       setStep("moderating");
       setProgress(10);
       const previousReportTexts = reports.map(r => r.content);
@@ -76,28 +76,23 @@ export function ReportEditor() {
         return;
       }
 
-      // Step 2: Client-side Encryption
       setStep("encrypting");
       setProgress(25);
       await new Promise(resolve => setTimeout(resolve, 800));
 
-      // Step 3: AI Summarization for Public Readability
       setStep("summarizing");
       setProgress(40);
       const summaryResult = await summarizeReport({ content });
 
-      // Step 4: Cryptographic Signing
       setStep("signing");
       setProgress(60);
       await new Promise(resolve => setTimeout(resolve, 800));
 
-      // Step 5: IPFS Global Distribution
       setStep("uploading");
       setProgress(80);
       const mockCID = `Qm${Math.random().toString(36).substring(2, 15)}`;
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Step 6: Blockchain Anchoring
       setStep("anchoring");
       setProgress(95);
       const mockTxHash = `0x${Math.random().toString(16).substring(2, 12)}`;
