@@ -1,10 +1,10 @@
-
 "use client";
 
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { WalletProvider } from "@/components/veritas/WalletProvider";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Search, ExternalLink, Calendar, Hash, ShieldCheck, AlertCircle } from "lucide-react";
