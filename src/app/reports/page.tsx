@@ -17,7 +17,13 @@ import {
   Clock,
   Sparkles,
   TrendingUp,
-  Filter
+  Filter,
+  Volume2,
+  FileSearch,
+  ChevronRight,
+  Gavel,
+  Zap,
+  CheckCircle2
 } from "lucide-react";
 import { 
   Dialog, 
@@ -30,12 +36,21 @@ import {
 import { useWallet, Report } from "@/components/veritas/WalletProvider";
 import { useState, useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getExpertAnalysis, ExpertAnalysisOutput } from "@/ai/flows/expert-analysis-flow";
+import { generateVoiceSummary } from "@/ai/flows/voice-summary-flow";
+import { useToast } from "@/hooks/use-toast";
 
 export default function ReportsFeed() {
   const { reports } = useWallet();
+  const { toast } = useToast();
   const [search, setSearch] = useState("");
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const [isMounted, setIsMounted] = useState(false);
+  const [analysis, setAnalysis] = useState<ExpertAnalysisOutput | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [isGeneratingAudio, setIsGeneratingAudio] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -46,10 +61,45 @@ export default function ReportsFeed() {
     r.hash.toLowerCase().includes(search.toLowerCase())
   );
 
+  const handleFetchAnalysis = async (report: Report) => {
+    setIsAnalyzing(true);
+    try {
+      const result = await getExpertAnalysis({ content: report.content });
+      setAnalysis(result);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Analysis Failed",
+        description: "Could not reach the expert intelligence layer.",
+      });
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  const handlePlayAudio = async (text: string) => {
+    if (audioUrl) {
+      setAudioUrl(null); // Reset
+    }
+    setIsGeneratingAudio(true);
+    try {
+      const { media } = await generateVoiceSummary({ text });
+      setAudioUrl(media);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Voice Generation Failed",
+        description: "The audio relay is currently congested.",
+      });
+    } finally {
+      setIsGeneratingAudio(false);
+    }
+  };
+
   if (!isMounted) {
     return (
       <div className="min-h-screen pt-32 flex items-center justify-center">
-        <div className="animate-pulse text-accent font-headline font-bold">Synchronizing Truth Layer...</div>
+        <div className="animate-pulse text-accent font-headline font-bold uppercase tracking-widest">Synchronizing Truth Layer...</div>
       </div>
     );
   }
@@ -59,7 +109,7 @@ export default function ReportsFeed() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-end gap-10 mb-16">
           <div className="space-y-4 max-w-2xl">
-            <h1 className="text-5xl md:text-6xl font-headline font-bold text-white tracking-tight">The Registry</h1>
+            <h1 className="text-5xl md:text-6xl font-headline font-bold text-white tracking-tighter">THE REGISTRY</h1>
             <p className="text-muted-foreground text-xl font-light leading-relaxed">
               Explore the immutable history of humanity's courage. Verified and anchored to the global truth layer.
             </p>
@@ -84,7 +134,11 @@ export default function ReportsFeed() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
           <div className="lg:col-span-3 space-y-8">
             {filteredReports.length > 0 ? filteredReports.map((report) => (
-              <Card key={report.id} className="bg-card/30 backdrop-blur-md border-white/5 hover:border-accent/40 transition-all group overflow-hidden cursor-pointer" onClick={() => setSelectedReport(report)}>
+              <Card key={report.id} className="bg-card/30 backdrop-blur-md border-white/5 hover:border-accent/40 transition-all group overflow-hidden cursor-pointer" onClick={() => {
+                setSelectedReport(report);
+                setAnalysis(null);
+                setAudioUrl(null);
+              }}>
                 <CardHeader className="pb-4">
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex gap-2">
@@ -112,9 +166,9 @@ export default function ReportsFeed() {
                 </CardHeader>
                 <CardContent className="space-y-6">
                   {report.summary ? (
-                    <div className="bg-accent/5 p-4 rounded-xl border border-accent/10 flex gap-4">
-                      <Sparkles className="h-5 w-5 text-accent shrink-0 mt-0.5" />
-                      <p className="text-sm text-white/90 leading-relaxed italic">
+                    <div className="bg-accent/5 p-4 rounded-xl border border-accent/10 flex gap-4 items-center">
+                      <Sparkles className="h-5 w-5 text-accent shrink-0" />
+                      <p className="text-sm text-white/90 leading-relaxed italic line-clamp-2">
                         {report.summary}
                       </p>
                     </div>
@@ -142,18 +196,13 @@ export default function ReportsFeed() {
                           {report.status}
                         </span>
                       </div>
-                      
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground/60 font-mono bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
-                        <Hash className="h-3.5 w-3.5" />
-                        {report.hash.slice(0, 16)}...
-                      </div>
                     </div>
                     
                     <Button 
                       variant="ghost" 
-                      className="text-accent hover:text-accent hover:bg-accent/10 font-bold gap-2 text-sm group/btn"
+                      className="text-accent hover:text-accent hover:bg-accent/10 font-bold gap-2 text-sm group/btn p-0 h-auto"
                     >
-                      Audit Record <ExternalLink className="h-4 w-4 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                      Audit Record <ChevronRight className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
                     </Button>
                   </div>
                 </CardContent>
@@ -182,10 +231,6 @@ export default function ReportsFeed() {
                     {reports.length > 0 ? ((reports.filter(r => r.status === 'Verified').length / reports.length) * 100).toFixed(0) : 0}%
                   </p>
                 </div>
-                <div className="space-y-2">
-                  <p className="text-[10px] text-muted-foreground uppercase tracking-[0.3em] font-bold">Active Nodes</p>
-                  <p className="text-5xl font-headline font-bold text-white tracking-tighter">1,402</p>
-                </div>
                 <Separator className="bg-white/10" />
                 <Button className="w-full h-14 bg-accent hover:bg-accent/90 text-lg font-bold rounded-xl shadow-xl shadow-accent/20" asChild>
                   <a href="/verify">Audit the Network</a>
@@ -201,13 +246,27 @@ export default function ReportsFeed() {
           <DialogContent className="max-w-4xl bg-card border-white/10 p-0 overflow-hidden rounded-3xl">
             <div className="bg-gradient-to-br from-primary/20 to-transparent p-10 border-b border-white/5">
               <DialogHeader className="text-left">
-                <div className="flex items-center gap-3 mb-4">
-                  <Badge variant="secondary" className="bg-accent/20 text-accent font-bold text-[10px] uppercase tracking-[0.2em] px-4 py-1">
-                    {selectedReport.category}
-                  </Badge>
-                  <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-[0.2em] px-4 py-1 border-white/20 text-white">
-                    {selectedReport.status}
-                  </Badge>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <Badge variant="secondary" className="bg-accent/20 text-accent font-bold text-[10px] uppercase tracking-[0.2em] px-4 py-1">
+                      {selectedReport.category}
+                    </Badge>
+                    <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-[0.2em] px-4 py-1 border-white/20 text-white">
+                      {selectedReport.status}
+                    </Badge>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="border-white/10 text-white hover:bg-white/5 gap-2 h-9 px-4 rounded-xl"
+                    onClick={() => handlePlayAudio(selectedReport.summary || selectedReport.content)}
+                    disabled={isGeneratingAudio}
+                  >
+                    {isGeneratingAudio ? (
+                      <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    ) : <Volume2 className="h-4 w-4" />}
+                    Listen to Insight
+                  </Button>
                 </div>
                 <DialogTitle className="text-4xl font-headline font-bold text-white leading-tight mb-2">
                   {selectedReport.title}
@@ -217,52 +276,140 @@ export default function ReportsFeed() {
                   <span className="flex items-center gap-2"><Hash className="h-4 w-4" /> CID: {selectedReport.hash.slice(0, 12)}...</span>
                 </div>
               </DialogHeader>
-            </div>
-
-            <div className="p-10 space-y-10 max-h-[60vh] overflow-y-auto custom-scrollbar">
-              {selectedReport.summary && (
-                <div className="bg-primary/10 p-6 rounded-2xl border border-primary/20 space-y-3">
-                  <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent flex items-center gap-2">
-                    <Sparkles className="h-3 w-3" /> AI Summary for Public Insight
-                  </h4>
-                  <p className="text-lg text-white font-light leading-relaxed italic">
-                    "{selectedReport.summary}"
-                  </p>
+              
+              {audioUrl && (
+                <div className="mt-6">
+                  <audio controls className="w-full h-10 filter invert opacity-80" autoPlay>
+                    <source src={audioUrl} type="audio/wav" />
+                  </audio>
                 </div>
               )}
-
-              <div className="space-y-4">
-                <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">Original Encrypted Evidence</h4>
-                <div className="bg-white/[0.02] p-8 rounded-2xl border border-white/5">
-                  <p className="text-muted-foreground/90 leading-relaxed whitespace-pre-wrap font-body text-lg font-light">
-                    {selectedReport.content}
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-                <div className="p-6 rounded-2xl bg-secondary/30 border border-white/5 space-y-3 group hover:border-accent/30 transition-colors">
-                  <div className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
-                    <Database className="h-4 w-4" /> IPFS Decentralized Storage
-                  </div>
-                  <p className="font-mono text-xs break-all text-white/80 leading-relaxed">{selectedReport.hash}</p>
-                </div>
-                <div className="p-6 rounded-2xl bg-secondary/30 border border-white/5 space-y-3 group hover:border-accent/30 transition-colors">
-                  <div className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
-                    <LinkIcon className="h-4 w-4" /> Proof of Existence Anchor
-                  </div>
-                  <p className="font-mono text-xs break-all text-white/80 leading-relaxed">TX: {selectedReport.txHash}</p>
-                  <p className="font-mono text-xs text-accent font-bold">Block Confirmation: {selectedReport.block}</p>
-                </div>
-              </div>
             </div>
+
+            <Tabs defaultValue="summary" className="w-full">
+              <div className="px-10 pt-6">
+                <TabsList className="bg-secondary/50 border border-white/5 p-1 rounded-xl">
+                  <TabsTrigger value="summary" className="gap-2 px-6 rounded-lg data-[state=active]:bg-primary">
+                    <Sparkles className="h-4 w-4" /> Insight
+                  </TabsTrigger>
+                  <TabsTrigger value="analysis" className="gap-2 px-6 rounded-lg data-[state=active]:bg-primary" onClick={() => !analysis && handleFetchAnalysis(selectedReport)}>
+                    <FileSearch className="h-4 w-4" /> Expert Analysis
+                  </TabsTrigger>
+                  <TabsTrigger value="raw" className="gap-2 px-6 rounded-lg data-[state=active]:bg-primary">
+                    <Lock className="h-4 w-4" /> Original Evidence
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+
+              <div className="p-10 max-h-[50vh] overflow-y-auto custom-scrollbar">
+                <TabsContent value="summary" className="m-0 space-y-8 animate-in fade-in duration-300">
+                  {selectedReport.summary && (
+                    <div className="bg-primary/10 p-8 rounded-2xl border border-primary/20 space-y-4">
+                      <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent flex items-center gap-2">
+                        <Zap className="h-3 w-3" /> Core Intelligence Summary
+                      </h4>
+                      <p className="text-xl text-white font-light leading-relaxed italic">
+                        "{selectedReport.summary}"
+                      </p>
+                    </div>
+                  )}
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <Card className="bg-white/[0.02] border-white/5 p-6">
+                      <h5 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-4">Storage Layer</h5>
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-3">
+                          <Database className="h-5 w-5 text-accent" />
+                          <div>
+                            <p className="text-xs text-white font-bold">IPFS CID</p>
+                            <p className="text-[10px] font-mono text-muted-foreground truncate w-40">{selectedReport.hash}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                    <Card className="bg-white/[0.02] border-white/5 p-6">
+                      <h5 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-4">Chain Anchor</h5>
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-3">
+                          <LinkIcon className="h-5 w-5 text-accent" />
+                          <div>
+                            <p className="text-xs text-white font-bold">Transaction</p>
+                            <p className="text-[10px] font-mono text-muted-foreground truncate w-40">{selectedReport.txHash}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="analysis" className="m-0 space-y-8 animate-in fade-in duration-300">
+                  {isAnalyzing ? (
+                    <div className="py-20 flex flex-col items-center justify-center gap-4">
+                      <div className="h-10 w-10 border-4 border-accent/20 border-t-accent rounded-full animate-spin" />
+                      <p className="text-xs text-muted-foreground uppercase font-bold tracking-widest">Consulting Ethics Council...</p>
+                    </div>
+                  ) : analysis ? (
+                    <div className="space-y-10">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="space-y-3">
+                          <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                            <Gavel className="h-4 w-4 text-accent" /> Legal Implications
+                          </h4>
+                          <p className="text-sm text-muted-foreground leading-relaxed">{analysis.legalImplications}</p>
+                        </div>
+                        <div className="space-y-3">
+                          <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                            <ShieldCheck className="h-4 w-4 text-accent" /> Ethical Analysis
+                          </h4>
+                          <p className="text-sm text-muted-foreground leading-relaxed">{analysis.ethicalAnalysis}</p>
+                        </div>
+                      </div>
+                      <div className="space-y-3">
+                        <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                          <TrendingUp className="h-4 w-4 text-accent" /> Societal Impact
+                        </h4>
+                        <p className="text-sm text-muted-foreground leading-relaxed">{analysis.societalImpact}</p>
+                      </div>
+                      <div className="bg-accent/5 p-6 rounded-2xl border border-accent/10">
+                        <h4 className="text-[10px] font-bold uppercase tracking-widest text-accent mb-4">Recommended Actions</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {analysis.actionableSteps.map((step, i) => (
+                            <div key={i} className="flex gap-3 text-sm text-white/80">
+                              <CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-0.5" />
+                              {step}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-center py-20">
+                      <Button onClick={() => handleFetchAnalysis(selectedReport)} className="bg-accent font-bold">
+                        Generate Expert Analysis
+                      </Button>
+                    </div>
+                  )}
+                </TabsContent>
+
+                <TabsContent value="raw" className="m-0 animate-in fade-in duration-300">
+                  <div className="space-y-4">
+                    <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground">Original Encrypted Evidence</h4>
+                    <div className="bg-white/[0.02] p-8 rounded-2xl border border-white/5">
+                      <p className="text-muted-foreground/90 leading-relaxed whitespace-pre-wrap font-body text-lg font-light">
+                        {selectedReport.content}
+                      </p>
+                    </div>
+                  </div>
+                </TabsContent>
+              </div>
+            </Tabs>
 
             <DialogFooter className="p-8 bg-black/40 border-t border-white/5">
               <Button variant="outline" onClick={() => setSelectedReport(null)} className="h-12 px-8 rounded-xl border-white/10 hover:bg-white/5 font-bold">
-                Close Registry Entry
+                Close Record
               </Button>
-              <Button className="h-12 px-8 rounded-xl bg-accent hover:bg-accent/90 font-bold">
-                Download Cryptographic Proof
+              <Button className="h-12 px-8 rounded-xl bg-accent hover:bg-accent/90 font-bold shadow-lg shadow-accent/20">
+                Download Immutable Proof
               </Button>
             </DialogFooter>
           </DialogContent>

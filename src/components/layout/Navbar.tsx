@@ -1,7 +1,8 @@
+
 "use client";
 
 import Link from "next/link";
-import { Shield, Menu, X, Wallet, ShieldCheck, FileText, BarChart3, PlusCircle } from "lucide-react";
+import { Shield, Menu, X, Wallet, ShieldCheck, FileText, BarChart3, PlusCircle, Trophy } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useWallet } from "@/components/veritas/WalletProvider";
@@ -12,8 +13,9 @@ export function Navbar() {
   const { wallet, connect, disconnect } = useWallet();
 
   const navLinks = [
-    { name: "Reports", href: "/reports", icon: FileText },
+    { name: "Registry", href: "/reports", icon: FileText },
     { name: "Verify", href: "/verify", icon: ShieldCheck },
+    { name: "Elite", href: "/leaderboard", icon: Trophy },
     { name: "Transparency", href: "/transparency", icon: BarChart3 },
   ];
 
@@ -26,7 +28,7 @@ export function Navbar() {
               <div className="bg-primary/20 p-2 rounded-lg group-hover:bg-primary/30 transition-colors">
                 <Shield className="h-6 w-6 text-accent" />
               </div>
-              <span className="text-xl font-headline font-bold tracking-tight text-white uppercase">A-B-H-A-Y</span>
+              <span className="text-xl font-headline font-bold tracking-tighter text-white uppercase">A-B-H-A-Y</span>
             </Link>
           </div>
 
@@ -36,14 +38,14 @@ export function Navbar() {
               className="flex items-center gap-2 text-sm font-bold text-accent hover:text-accent/80 transition-colors"
             >
               <PlusCircle className="h-4 w-4" />
-              Submit Report
+              Broadcast Truth
             </Link>
             
             {navLinks.map((link) => (
               <Link 
                 key={link.name} 
                 href={link.href} 
-                className="text-sm font-medium text-muted-foreground hover:text-white transition-colors"
+                className="text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-white transition-colors"
               >
                 {link.name}
               </Link>
@@ -52,15 +54,15 @@ export function Navbar() {
             {wallet ? (
               <div className="flex items-center gap-4">
                 <div className="flex flex-col items-end">
-                  <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">Identified</span>
+                  <span className="text-[8px] text-muted-foreground uppercase font-bold tracking-[0.2em]">Identified</span>
                   <span className="text-xs font-mono text-accent">{wallet.address.slice(0, 6)}...{wallet.address.slice(-4)}</span>
                 </div>
-                <Button variant="outline" size="sm" onClick={disconnect} className="border-white/10 hover:bg-white/5">
+                <Button variant="outline" size="sm" onClick={disconnect} className="border-white/10 hover:bg-white/5 h-8 rounded-lg px-3 text-[10px] font-bold uppercase">
                   Exit
                 </Button>
               </div>
             ) : (
-              <Button onClick={connect} size="sm" className="bg-primary hover:bg-primary/80 text-white gap-2">
+              <Button onClick={connect} size="sm" className="bg-primary hover:bg-primary/80 text-white gap-2 h-9 px-4 rounded-xl text-xs font-bold">
                 <Wallet className="h-4 w-4" />
                 Generate DID
               </Button>
@@ -82,7 +84,7 @@ export function Navbar() {
             href="/submit"
             className="block px-3 py-2 text-base font-bold text-accent"
           >
-            Submit Report
+            Broadcast Truth
           </Link>
           {navLinks.map((link) => (
             <Link
@@ -101,7 +103,7 @@ export function Navbar() {
               </Button>
             ) : (
               <Button onClick={disconnect} variant="outline" className="w-full border-white/10">
-                Disconnect {wallet.address.slice(0, 4)}...
+                Exit Protocol
               </Button>
             )}
           </div>
